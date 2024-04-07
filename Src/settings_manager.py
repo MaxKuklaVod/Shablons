@@ -14,7 +14,7 @@ class settings_manager(object):
     # Наименование файла по умолчанию
     _settings_file_name = "settings.json"
     # Словарь с исходными данными
-    _data = None
+    _data = {}
     # Внутренний уникальный номер
     _uniqueNumber = None
     # Данные с настройками
@@ -115,6 +115,22 @@ class settings_manager(object):
             error_proxy: 
         """
         return self._error
+    
+    def _make_json(self):
 
+        saved={}
+
+        for cur_key in list(self._data.keys()):
+            saved[cur_key]=str(getattr(self.settings,cur_key))
+            print(getattr(self.settings,cur_key))
+
+        return json.dumps(saved,ensure_ascii=False)
+
+    def save_settings(self):
+        res=self._make_json()
+        file=os.path.join(self.file_path,self.file_name)
+
+        with open(file,'w') as saved:
+            saved.write(res)
 
     

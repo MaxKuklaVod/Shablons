@@ -1,6 +1,7 @@
 {
-   "inn":3800020344,
-   "short_name":"ООО Ромашка",
+   "inn": 3800020344,
+   "short_name": "ООО Ромашка",
    "is_first_start": true,
-   "report_mode":"json"
+   "report_mode": "json",
+   "block_period": "2024-04-07"
 }
