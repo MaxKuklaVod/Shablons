@@ -15,8 +15,6 @@ from Src.Logics.storage_prototype import storage_prototype
 from Src.Logics.Reporting.Json_convert.reference_conventor import reference_conventor
 from exceptions import argument_exception
 from Src.Logics.process_factory import process_factory
-
-# для референсов
 from Src.Storage.storage_turn_model import storage_turn_model
 from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.range_model import range_model
@@ -27,13 +25,11 @@ from Src.Storage.storage_journal_row import storage_journal_row
 from Src.Storage.storage_journal_transaction import storage_journal_transaction
 
 
-# PERENESTI I ZAMENIT MAIN
-
-
 class storage_service:
     __data = []
+    __options = None
+    __blocked = []
 
-    # конструктор
     def __init__(self, data: list):
 
         if len(data) == 0:
@@ -41,23 +37,20 @@ class storage_service:
 
         self.__data = data
 
-    # получить обооты за период
-    def create_turns(self, start_date: datetime, finish_date: datetime) -> dict:
+    def create_turns(self, start_period: datetime, stop_period: datetime) -> list:
 
-        if not isinstance(start_date, datetime) or not isinstance(
-            finish_date, datetime
+        if not isinstance(start_period, datetime) or not isinstance(
+            stop_period, datetime
         ):
             raise argument_exception("Неверный аргумент")
 
-        if start_date > finish_date:
+        if start_period > stop_period:
             raise argument_exception("Неверно переданы аргументы")
 
         prototype = storage_prototype(self.__data)
 
-        # фильтруем
-        transactions = prototype.filter_date(start_date, finish_date)
+        transactions = prototype.filter_date(start_period, stop_period)
 
-        # конвентор
         reference = reference_conventor(
             nomenclature_model,
             error_proxy,
@@ -76,8 +69,6 @@ class storage_service:
             result[index] = reference.convert(cur_tran)
 
         return result
-
-    # получить обороты по номенклатуре
 
     def create_id_turns(self, id: uuid.UUID):
         if not isinstance(id, uuid.UUID):
@@ -114,23 +105,19 @@ class storage_service:
 
         prototype = storage_prototype(self.__data)
 
-        # фильтруем
         transactions = prototype.filter_reciepe(reciepe)
 
-        # оборот
         proces = process_factory()
         turn = proces.create(storage.process_turn_key(), transactions.data)
 
         transactions_list = []
-        # пробегаемся по обороту
+
         for cur_ing in list(reciepe.ingridient_proportions.keys()):
-            # флаг для проверки на присутствие на складах
             flag = True
             for cur_nom in turn:
                 if cur_ing.id == cur_nom.nomenclature.id:
                     amount = list(reciepe.ingridient_proportions[cur_ing].keys())[0]
 
-                    # пересчитываем единицы измерения
                     if cur_ing.ran_mod != cur_nom.nomenclature.ran_mod:
                         amount *= cur_ing.ran_mod.recount_ratio
 
@@ -142,7 +129,6 @@ class storage_service:
                     flag = False
                     break
 
-            # если в обороте не найдена номенклатура кидаем not found
             if not flag:
                 transactions_list.append(f"{cur_nom.nomenclature.id} not found")
 
@@ -158,7 +144,6 @@ class storage_service:
         result = {}
         for index, cur_tran in enumerate(transactions_list):
 
-            # так как reference conventor работает только со сложными типами данных, делаем разделение
             if isinstance(cur_tran, str):
                 result[index] = cur_tran
                 continue
@@ -167,7 +152,6 @@ class storage_service:
 
         return result
 
-    # рейтинг номенклатуры по складам и айди
     def create_id_turns_storage(self, nomenclature_id: uuid.UUID, storage_id: str):
         if not isinstance(nomenclature_id, uuid.UUID):
             raise argument_exception("Неверный аргумент")
@@ -177,12 +161,10 @@ class storage_service:
         if storage_id is not None:
             transactions = transactions.filter_storage(uuid.UUID(storage_id))
 
-        # фильтруем
         transactions = transactions.filter_nom_id(nomenclature_id)
 
         print(transactions)
 
-        # конвентор
         reference = reference_conventor(
             nomenclature_model,
             error_proxy,
@@ -198,7 +180,6 @@ class storage_service:
 
         data_turn_sort = {}
 
-        # по ключам оборота делаем слвоарь складов
         for cur_turn in data:
             data_turn_sort[cur_turn.amount] = cur_turn
 
@@ -219,7 +200,6 @@ class storage_service:
             raise argument_exception()
         json_text = json.dumps(data)
 
-        # Подготовить ответ
         result = app.response_class(
             response=f"{json_text}",
             status=200,
@@ -227,3 +207,19 @@ class storage_service:
         )
 
         return result
+
+    def create_blocked_turns(self) -> dict:
+
+        prototype = storage_prototype(self.__data)
+
+        transactions = prototype.filter_date(
+            datetime(1999, 1, 1), self.__options.block_period
+        )
+
+        proces = process_factory()
+
+        data = proces.create(storage.process_turn_key(), transactions.data)
+
+        self.__blocked = data
+
+        return data
