@@ -1,0 +1,848 @@
+{
+    "0": {
+        "amount": "242",
+        "location": "\u043f\u0435\u0440\u0435\u0443\u043b\u043e\u043a \u0448\u0442\u0443\u043a\u0430\u0442\u0443\u0440\u043e\u0432 212",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u043c\u0430\u0441\u043b\u043e",
+            "id": "e069f2aa-cef8-4c59-a2ab-bb662841b91c",
+            "name": "\u043c\u0430\u0441\u043b\u043e",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "3ea94808-f16f-48fc-84fc-b019be954224",
+        "operation_type": "add",
+        "period": "2024-01-15 00:00:00",
+        "storage_id": "4c9e468e-1b08-4107-bf98-ef864a8956b4"
+    },
+    "1": {
+        "amount": "202",
+        "location": "\u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442 \u0431\u043b\u0438\u043d-\u043d\u0435-\u0442\u0443\u0434\u0430-\u0441\u0432\u0435\u0440\u043d\u0443\u043b 11",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u043c\u0430\u0441\u043b\u043e",
+            "id": "e069f2aa-cef8-4c59-a2ab-bb662841b91c",
+            "name": "\u043c\u0430\u0441\u043b\u043e",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "4c6d5630-60b4-42c0-91e0-79375780d364",
+        "operation_type": "delete",
+        "period": "2023-12-12 00:00:00",
+        "storage_id": "5af7ed6e-8493-4790-bf1b-3d554026013e"
+    },
+    "2": {
+        "amount": "100",
+        "location": "\u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442 \u0431\u043b\u0438\u043d-\u043d\u0435-\u0442\u0443\u0434\u0430-\u0441\u0432\u0435\u0440\u043d\u0443\u043b 11",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u044f\u0438\u0447\u043d\u044b\u0439 \u0431\u0435\u043b\u043e\u043a",
+            "id": "8a2b3d06-5ba5-422d-ad1d-aaf05273ca55",
+            "name": "\u044f\u0438\u0447\u043d\u044b\u0439 \u0431\u0435\u043b\u043e\u043a",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "633c56dc-ab23-4630-a453-68202a84433f",
+                "name": "\u044f\u0439\u0446\u0430"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "b4768a0e-2327-4b27-a6a7-c8e6e7c4382f",
+                "name": "\u0428\u0442\u0443\u043a\u0430",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "c813622e-7ec9-4bd9-8db2-29634cec9f1f",
+        "operation_type": "add",
+        "period": "2024-02-20 00:00:00",
+        "storage_id": "5af7ed6e-8493-4790-bf1b-3d554026013e"
+    },
+    "3": {
+        "amount": "2",
+        "location": "\u043f\u0435\u0440\u0435\u0443\u043b\u043e\u043a \u0448\u0442\u0443\u043a\u0430\u0442\u0443\u0440\u043e\u0432 212",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u0441\u0430\u0445\u0430\u0440\u043d\u0430\u044f \u043f\u0443\u0434\u0440\u0430",
+            "id": "d802ac03-9e0c-4e55-b793-836e4a214a6f",
+            "name": "\u0441\u0430\u0445\u0430\u0440\u043d\u0430\u044f \u043f\u0443\u0434\u0440\u0430",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": {
+                    "base_range": "None",
+                    "creation_date": "2024-04-05 22:22:42.215916",
+                    "error": {
+                        "error_source": "",
+                        "error_text": "",
+                        "if_error": "False"
+                    },
+                    "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                    "name": "\u0413\u0440\u0430\u043c\u043c",
+                    "recount_ratio": "1"
+                },
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "18660624-32bc-44a9-991d-1a4e43919f6a",
+                "name": "\u041a\u0438\u043b\u043e\u0433\u0440\u0430\u043c",
+                "recount_ratio": "1000"
+            }
+        },
+        "operation_id": "5e20105f-0945-44f0-9933-16b18e67e521",
+        "operation_type": "add",
+        "period": "2023-11-20 00:00:00",
+        "storage_id": "4c9e468e-1b08-4107-bf98-ef864a8956b4"
+    },
+    "4": {
+        "amount": "300",
+        "location": "\u043f\u0435\u0440\u0435\u0443\u043b\u043e\u043a \u0448\u0442\u0443\u043a\u0430\u0442\u0443\u0440\u043e\u0432 212",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u043c\u0430\u0441\u043b\u043e",
+            "id": "e069f2aa-cef8-4c59-a2ab-bb662841b91c",
+            "name": "\u043c\u0430\u0441\u043b\u043e",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "2eaff7c4-32ee-4b10-80b5-10b88236fd3a",
+        "operation_type": "delete",
+        "period": "2023-03-04 00:00:00",
+        "storage_id": "4c9e468e-1b08-4107-bf98-ef864a8956b4"
+    },
+    "5": {
+        "amount": "122",
+        "location": "\u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442 \u0431\u043b\u0438\u043d-\u043d\u0435-\u0442\u0443\u0434\u0430-\u0441\u0432\u0435\u0440\u043d\u0443\u043b 11",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u0441\u0430\u0445\u0430\u0440",
+            "id": "1383da05-91a4-493b-a569-f6ef8e73e0fb",
+            "name": "\u0441\u0430\u0445\u0430\u0440",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": {
+                    "base_range": "None",
+                    "creation_date": "2024-04-05 22:22:42.215916",
+                    "error": {
+                        "error_source": "",
+                        "error_text": "",
+                        "if_error": "False"
+                    },
+                    "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                    "name": "\u0413\u0440\u0430\u043c\u043c",
+                    "recount_ratio": "1"
+                },
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "18660624-32bc-44a9-991d-1a4e43919f6a",
+                "name": "\u041a\u0438\u043b\u043e\u0433\u0440\u0430\u043c",
+                "recount_ratio": "1000"
+            }
+        },
+        "operation_id": "147b7f0a-c62f-4763-9ef5-21483db8ed62",
+        "operation_type": "add",
+        "period": "2024-01-15 00:00:00",
+        "storage_id": "5af7ed6e-8493-4790-bf1b-3d554026013e"
+    },
+    "6": {
+        "amount": "451",
+        "location": "\u043f\u0435\u0440\u0435\u0443\u043b\u043e\u043a \u0448\u0442\u0443\u043a\u0430\u0442\u0443\u0440\u043e\u0432 212",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u041f\u0448\u0435\u043d\u0438\u0447\u043d\u0430\u044f \u043c\u0443\u043a\u0430",
+            "id": "6c51ab57-10f3-4e8f-8614-2b27a55ab2a8",
+            "name": "\u041f\u0448\u0435\u043d\u0438\u0447\u043d\u0430\u044f \u043c\u0443\u043a\u0430",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": {
+                    "base_range": "None",
+                    "creation_date": "2024-04-05 22:22:42.215916",
+                    "error": {
+                        "error_source": "",
+                        "error_text": "",
+                        "if_error": "False"
+                    },
+                    "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                    "name": "\u0413\u0440\u0430\u043c\u043c",
+                    "recount_ratio": "1"
+                },
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "18660624-32bc-44a9-991d-1a4e43919f6a",
+                "name": "\u041a\u0438\u043b\u043e\u0433\u0440\u0430\u043c",
+                "recount_ratio": "1000"
+            }
+        },
+        "operation_id": "83d45b8f-391a-4f69-a980-93bbcd13cc39",
+        "operation_type": "delete",
+        "period": "2023-12-12 00:00:00",
+        "storage_id": "4c9e468e-1b08-4107-bf98-ef864a8956b4"
+    },
+    "7": {
+        "amount": "4652",
+        "location": "\u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442 \u0431\u043b\u0438\u043d-\u043d\u0435-\u0442\u0443\u0434\u0430-\u0441\u0432\u0435\u0440\u043d\u0443\u043b 11",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u0441\u0430\u0445\u0430\u0440\u043d\u0430\u044f \u043f\u0443\u0434\u0440\u0430",
+            "id": "d802ac03-9e0c-4e55-b793-836e4a214a6f",
+            "name": "\u0441\u0430\u0445\u0430\u0440\u043d\u0430\u044f \u043f\u0443\u0434\u0440\u0430",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": {
+                    "base_range": "None",
+                    "creation_date": "2024-04-05 22:22:42.215916",
+                    "error": {
+                        "error_source": "",
+                        "error_text": "",
+                        "if_error": "False"
+                    },
+                    "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                    "name": "\u0413\u0440\u0430\u043c\u043c",
+                    "recount_ratio": "1"
+                },
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "18660624-32bc-44a9-991d-1a4e43919f6a",
+                "name": "\u041a\u0438\u043b\u043e\u0433\u0440\u0430\u043c",
+                "recount_ratio": "1000"
+            }
+        },
+        "operation_id": "64172f47-305c-4308-8264-79a123b3e39d",
+        "operation_type": "add",
+        "period": "2024-02-20 00:00:00",
+        "storage_id": "5af7ed6e-8493-4790-bf1b-3d554026013e"
+    },
+    "8": {
+        "amount": "1231",
+        "location": "\u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442 \u0431\u043b\u0438\u043d-\u043d\u0435-\u0442\u0443\u0434\u0430-\u0441\u0432\u0435\u0440\u043d\u0443\u043b 11",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u043a\u0430\u043a\u0430\u043e",
+            "id": "ac2ca3f9-4b3c-4615-81fe-f9af77301e76",
+            "name": "\u043a\u0430\u043a\u0430\u043e",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "a49fbf8a-27ab-4a91-8a68-aadf5ed7808f",
+        "operation_type": "delete",
+        "period": "2023-11-20 00:00:00",
+        "storage_id": "5af7ed6e-8493-4790-bf1b-3d554026013e"
+    },
+    "9": {
+        "amount": "12",
+        "location": "\u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442 \u0431\u043b\u0438\u043d-\u043d\u0435-\u0442\u0443\u0434\u0430-\u0441\u0432\u0435\u0440\u043d\u0443\u043b 11",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u043a\u043e\u0440\u0438\u0446\u0430",
+            "id": "5df8ae4e-8a4a-4626-91b7-2ab7992c95cf",
+            "name": "\u043a\u043e\u0440\u0438\u0446\u0430",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "912ed7cc-725b-4170-aa18-308620369cc8",
+        "operation_type": "add",
+        "period": "2023-03-04 00:00:00",
+        "storage_id": "5af7ed6e-8493-4790-bf1b-3d554026013e"
+    },
+    "10": {
+        "amount": "213",
+        "location": "\u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442 \u0431\u043b\u0438\u043d-\u043d\u0435-\u0442\u0443\u0434\u0430-\u0441\u0432\u0435\u0440\u043d\u0443\u043b 11",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u043a\u0430\u043a\u0430\u043e",
+            "id": "ac2ca3f9-4b3c-4615-81fe-f9af77301e76",
+            "name": "\u043a\u0430\u043a\u0430\u043e",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "6a5998ee-ce56-40a8-8099-3ec5b51cfd17",
+        "operation_type": "delete",
+        "period": "2024-01-15 00:00:00",
+        "storage_id": "5af7ed6e-8493-4790-bf1b-3d554026013e"
+    },
+    "11": {
+        "amount": "451",
+        "location": "\u043f\u0435\u0440\u0435\u0443\u043b\u043e\u043a \u0448\u0442\u0443\u043a\u0430\u0442\u0443\u0440\u043e\u0432 212",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u0432\u0430\u043d\u0438\u043b\u0438\u043d",
+            "id": "904d0c5d-7159-46c5-ab71-c80353f54f19",
+            "name": "\u0432\u0430\u043d\u0438\u043b\u0438\u043d",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "137885f7-0351-4b5a-9807-7d91e7292faf",
+        "operation_type": "add",
+        "period": "2023-12-12 00:00:00",
+        "storage_id": "4c9e468e-1b08-4107-bf98-ef864a8956b4"
+    },
+    "12": {
+        "amount": "231",
+        "location": "\u043f\u0435\u0440\u0435\u0443\u043b\u043e\u043a \u0448\u0442\u0443\u043a\u0430\u0442\u0443\u0440\u043e\u0432 212",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u0432\u0430\u043d\u0438\u043b\u0438\u043d",
+            "id": "904d0c5d-7159-46c5-ab71-c80353f54f19",
+            "name": "\u0432\u0430\u043d\u0438\u043b\u0438\u043d",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "961c1e35-0050-4f1c-9c61-4870f8dfdb54",
+        "operation_type": "delete",
+        "period": "2024-02-20 00:00:00",
+        "storage_id": "4c9e468e-1b08-4107-bf98-ef864a8956b4"
+    },
+    "13": {
+        "amount": "4512",
+        "location": "\u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442 \u0431\u043b\u0438\u043d-\u043d\u0435-\u0442\u0443\u0434\u0430-\u0441\u0432\u0435\u0440\u043d\u0443\u043b 11",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u044f\u0439\u0446\u0430",
+            "id": "a2464c94-a991-41d5-bf2c-f81d65dd6764",
+            "name": "\u044f\u0439\u0446\u0430",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "633c56dc-ab23-4630-a453-68202a84433f",
+                "name": "\u044f\u0439\u0446\u0430"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "b4768a0e-2327-4b27-a6a7-c8e6e7c4382f",
+                "name": "\u0428\u0442\u0443\u043a\u0430",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "14d02dbb-3ae4-4711-a628-673cbc992def",
+        "operation_type": "add",
+        "period": "2023-11-20 00:00:00",
+        "storage_id": "5af7ed6e-8493-4790-bf1b-3d554026013e"
+    },
+    "14": {
+        "amount": "10",
+        "location": "\u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442 \u0431\u043b\u0438\u043d-\u043d\u0435-\u0442\u0443\u0434\u0430-\u0441\u0432\u0435\u0440\u043d\u0443\u043b 11",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u043c\u0430\u0441\u043b\u043e",
+            "id": "e069f2aa-cef8-4c59-a2ab-bb662841b91c",
+            "name": "\u043c\u0430\u0441\u043b\u043e",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "ca944840-d845-4cc9-8287-e659f5687e1a",
+        "operation_type": "add",
+        "period": "2023-03-04 00:00:00",
+        "storage_id": "5af7ed6e-8493-4790-bf1b-3d554026013e"
+    },
+    "15": {
+        "amount": "218",
+        "location": "\u043f\u0440\u043e\u0441\u043f\u0435\u043a\u0442 \u0431\u043b\u0438\u043d-\u043d\u0435-\u0442\u0443\u0434\u0430-\u0441\u0432\u0435\u0440\u043d\u0443\u043b 11",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u0441\u0430\u0445\u0430\u0440",
+            "id": "1383da05-91a4-493b-a569-f6ef8e73e0fb",
+            "name": "\u0441\u0430\u0445\u0430\u0440",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": {
+                    "base_range": "None",
+                    "creation_date": "2024-04-05 22:22:42.215916",
+                    "error": {
+                        "error_source": "",
+                        "error_text": "",
+                        "if_error": "False"
+                    },
+                    "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                    "name": "\u0413\u0440\u0430\u043c\u043c",
+                    "recount_ratio": "1"
+                },
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "18660624-32bc-44a9-991d-1a4e43919f6a",
+                "name": "\u041a\u0438\u043b\u043e\u0433\u0440\u0430\u043c",
+                "recount_ratio": "1000"
+            }
+        },
+        "operation_id": "ae2452c8-56ae-4160-96ef-4fb954ce576f",
+        "operation_type": "delete",
+        "period": "2024-01-15 00:00:00",
+        "storage_id": "5af7ed6e-8493-4790-bf1b-3d554026013e"
+    },
+    "16": {
+        "amount": "5456",
+        "location": "\u043f\u0435\u0440\u0435\u0443\u043b\u043e\u043a \u0448\u0442\u0443\u043a\u0430\u0442\u0443\u0440\u043e\u0432 212",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u044f\u0439\u0446\u0430",
+            "id": "a2464c94-a991-41d5-bf2c-f81d65dd6764",
+            "name": "\u044f\u0439\u0446\u0430",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "633c56dc-ab23-4630-a453-68202a84433f",
+                "name": "\u044f\u0439\u0446\u0430"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "b4768a0e-2327-4b27-a6a7-c8e6e7c4382f",
+                "name": "\u0428\u0442\u0443\u043a\u0430",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "cf750005-72a7-468f-a59b-86745c47c2b2",
+        "operation_type": "add",
+        "period": "2023-12-12 00:00:00",
+        "storage_id": "4c9e468e-1b08-4107-bf98-ef864a8956b4"
+    },
+    "17": {
+        "amount": "123",
+        "location": "\u043f\u0435\u0440\u0435\u0443\u043b\u043e\u043a \u0448\u0442\u0443\u043a\u0430\u0442\u0443\u0440\u043e\u0432 212",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u043a\u043e\u0440\u0438\u0446\u0430",
+            "id": "5df8ae4e-8a4a-4626-91b7-2ab7992c95cf",
+            "name": "\u043a\u043e\u0440\u0438\u0446\u0430",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "47c141bd-269a-4974-8a60-117aa280d2b9",
+        "operation_type": "delete",
+        "period": "2024-02-20 00:00:00",
+        "storage_id": "4c9e468e-1b08-4107-bf98-ef864a8956b4"
+    },
+    "18": {
+        "amount": "54",
+        "location": "\u043f\u0435\u0440\u0435\u0443\u043b\u043e\u043a \u0448\u0442\u0443\u043a\u0430\u0442\u0443\u0440\u043e\u0432 212",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u043a\u0443\u0440\u0438\u043d\u043d\u043e\u0435 \u0444\u0438\u043b\u0435",
+            "id": "a5087258-acba-4827-8106-1f4b83c54920",
+            "name": "\u043a\u0443\u0440\u0438\u043d\u043d\u043e\u0435 \u0444\u0438\u043b\u0435",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "37f6dee8-a7d1-459c-876a-4f377d22bbb5",
+                "name": "\u043c\u044f\u0441\u043e"
+            },
+            "ran_mod": {
+                "base_range": {
+                    "base_range": "None",
+                    "creation_date": "2024-04-05 22:22:42.215916",
+                    "error": {
+                        "error_source": "",
+                        "error_text": "",
+                        "if_error": "False"
+                    },
+                    "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                    "name": "\u0413\u0440\u0430\u043c\u043c",
+                    "recount_ratio": "1"
+                },
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "18660624-32bc-44a9-991d-1a4e43919f6a",
+                "name": "\u041a\u0438\u043b\u043e\u0433\u0440\u0430\u043c",
+                "recount_ratio": "1000"
+            }
+        },
+        "operation_id": "9d36dc79-7be6-4535-afaf-1fa29f9ea0b2",
+        "operation_type": "add",
+        "period": "2023-11-20 00:00:00",
+        "storage_id": "4c9e468e-1b08-4107-bf98-ef864a8956b4"
+    },
+    "19": {
+        "amount": "242",
+        "location": "\u043f\u0435\u0440\u0435\u0443\u043b\u043e\u043a \u0448\u0442\u0443\u043a\u0430\u0442\u0443\u0440\u043e\u0432 212",
+        "nomenclature": {
+            "error": {
+                "error_source": "",
+                "error_text": "",
+                "if_error": "False"
+            },
+            "full_name": "\u043c\u0430\u0441\u043b\u043e",
+            "id": "e069f2aa-cef8-4c59-a2ab-bb662841b91c",
+            "name": "\u043c\u0430\u0441\u043b\u043e",
+            "nom_group": {
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ac58282f-8e97-421c-919e-30b36044cd4f",
+                "name": "\u0418\u043d\u0433\u0440\u0438\u0434\u0438\u0435\u043d\u0442\u044b"
+            },
+            "ran_mod": {
+                "base_range": "None",
+                "creation_date": "2024-04-05 22:22:42.215916",
+                "error": {
+                    "error_source": "",
+                    "error_text": "",
+                    "if_error": "False"
+                },
+                "id": "ae2f2a50-aaf7-450b-8cb0-eb7ac64c7b81",
+                "name": "\u0413\u0440\u0430\u043c\u043c",
+                "recount_ratio": "1"
+            }
+        },
+        "operation_id": "201dd843-ba1b-46cd-ad1c-9f0dd119fcfe",
+        "operation_type": "delete",
+        "period": "2023-03-04 00:00:00",
+        "storage_id": "4c9e468e-1b08-4107-bf98-ef864a8956b4"
+    }
+}

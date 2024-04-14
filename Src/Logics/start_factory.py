@@ -1,281 +1,298 @@
-# Модели
-from Src.Models.group_model import group_model
-from Src.Models.unit_model import unit_model
-from Src.Models.nomenclature_model import nomenclature_model
-from Src.reference import reference
-from Src.Models.receipe_model import receipe_model
-from Src.Models.storage_row_model import storage_row_model
-from Src.Models.storage_model import storage_model
+from pathlib import Path
+import os
+import sys
 
-# Системное
-from Src.settings import settings
+sys.path.append(os.path.join(Path(__file__).parent.parent, "models"))
+
+from datetime import datetime
+from Src.Models.range_model import range_model
+from Src.Models.reciepe_model import reciepe_model
 from Src.Storage.storage import storage
-from Src.exceptions import exception_proxy, operation_exception, argument_exception
+from exceptions import argument_exception
+from Src.Models.nomenclature_model import (
+    nomenclature_model,
+    nomenclature_group_model,
+    range_model,
+)
+from Src.Storage.storage_factory import storage_factory
+from Src.Logics.Reporting.Json_convert.reference_conventor import reference_conventor
+from Src.Storage.storage_model import storage_model
+from settings import settings
+from error_proxy import error_proxy
+import json
 
-#
-# Класс для обработки данных. Начало работы приложения
-#
+
 class start_factory:
-    __oprions: settings = None
+
+    __options: settings = None
     __storage: storage = None
-    
-    def __init__(self, _options: settings,
-                 _storage: storage = None) -> None:
-        
-        exception_proxy.validate(_options, settings)
-        self.__oprions = _options
-        self.__storage = _storage
-        
-    
-    def __save(self, key:str, items: list):
-        """
-            Сохранить данные
-        Args:
-            key (str): ключ доступ
-            items (list): список
-        """
-        exception_proxy.validate(key, str)
-        
+    __storage_path = Path(__file__).parent.parent / "storage" / "saved_models"
+
+    def __init__(self, options: settings, stor: storage = None):
+        self.__options = options
+        self.__storage = stor
+
+    def __save(self):
+
+        reference = reference_conventor(
+            nomenclature_model,
+            reciepe_model,
+            nomenclature_group_model,
+            range_model,
+            error_proxy,
+        )
+        for cur_key in list(self.__storage.data.keys()):
+            result_json = {}
+            for index, cur_val in enumerate(self.__storage.data[cur_key]):
+                result_json[index] = reference.convert(cur_val)
+
+            with open(self.__storage_path / f"{cur_key}.json", "w") as saving:
+                saving.write(json.dumps(result_json))
+
+    def __build(self, nom: list):
         if self.__storage == None:
             self.__storage = storage()
-            
-        self.__storage.data[ key ] = items
-        
-    @property            
+
+        nom = start_factory.create_nomenclature()
+        # добавляем в data
+        self.__storage.data[storage.nomenclature_key()] = nom[0]
+        self.__storage.data[storage.unit_key()] = nom[1]
+        self.__storage.data[storage.group_key()] = nom[2]
+        self.__storage.data[storage.reciepe_key()] = nom[3]
+        # сохраняем
+        self.__save()
+
+        self.__storage.data[storage.journal_key()] = nom[4]
+
+    @property
     def storage(self):
-        """
-             Ссылка на объект хранилище данных
-        Returns:
-            _type_: _description_
-        """
         return self.__storage
-    
-    # Статические методы
-    
-    @staticmethod
-    def create_units() -> list:
-        """
-            Сформировать список единиц измерения
-        Returns:
-            _type_: _description_
-        """
-        items = []
-        items.append( unit_model.create_gram() )
-        items.append( unit_model.create_killogram() )
-        items.append( unit_model.create_liter() )
-        items.append( unit_model.create_milliliter() )
-        items.append( unit_model.create_ting() )
-        
-        return items
-    
-    @staticmethod
-    def create_nomenclatures() -> list:
-        """
-          Сформировать список номенклатуры
-        """
-        
-        group = group_model.create_default_group()
-        items = [ {"Мука пшеничная": "киллограмм"}, 
-                  {"Сахар":"киллограмм"}, 
-                  {"Сливочное масло" : "киллограмм"}, 
-                  {"Яйца": "штука"}, {"Ванилин": "грамм"}, 
-                  {"Куринное филе": "киллограмм"}, 
-                  {"Салат Романо": "грамм"},
-                  {"Сыр Пармезан" : "киллограмм"}, 
-                  {"Чеснок": "киллограмм"}, 
-                  {"Белый хлеб": "киллограмм"},
-                  {"Соль": "киллограмм"}, {"Черный перец": "грамм"}, 
-                  {"Оливковое масло": "литр"}, 
-                  {"Лимонный сок": "литр"},
-                  {"Горчица дижонская": "грамм"},
-                  {"Сахарная пудра": "грамм"},{"Ванилиин": "грамм"},
-                  {"Корица": "грамм"},
-                  {"Какао": "киллограмм"}]
-        
-        # Подготовим словарь со список единиц измерения
-        units = reference.create_dictionary(start_factory.create_units())
-        
-        result = []
-        for position in items:
-            # Получаем список кортежей и берем первое значение
-            _list =  list(position.items())
-            if len(_list) < 1:
-                raise operation_exception("Невозможно сформировать элементы номенклатуры! Некорректный список исходных элементов!")
-            
-            tuple = list(_list)[0]
-            
-            # Получаем неименование номенклатуры и единицы измерения
-            if len(tuple) < 2:
-                raise operation_exception("Невозможно сформировать элемент номенклатуры. Длина кортежа не корректна!")
-            
-            name   = tuple[0]
-            unit_name = tuple[1]
-            
-            if not unit_name in units.keys():
-                raise operation_exception(f"Невозможно найти в списке указанную единицу измерения {unit_name}!")
-            
-            # Создаем объект - номенклатура
-            item = nomenclature_model( name, group, units[unit_name])
-            result.append(item)
-          
-        return result
-      
-    @staticmethod      
-    def create_groups() -> list:
-        """
-            Сформировать список групп номенклатуры
-        Returns:
-            _type_: _description_
-        """
-        items = []
-        items.append( group_model.create_default_group())
-        return items         
-    
-    @staticmethod
-    def create_receipts(_data: list = None) -> list:
-        """
-            Сформировать список рецептов
-        Args:
-            _data (list, optional): Список номенклатуры. Defaults to None.
 
-        Raises:
-            argument_exception: _description_
-
-        Returns:
-            _type_: Массив объектов receipe_model
-        """
-        result = []
-        
-        if _data is None:
-            data = start_factory.create_nomenclatures()
-        else:
-            data = _data
-            
-        if len(data) == 0:
-            raise argument_exception("Некорректно переданы параметры! Список номенклатуры пуст.")        
-        
-        # Вафли хрустящие в вафильнице
-        items = [ {"Мука пшеничная": 100}, {"Сахар": 80}, {"Сливочное масло": 70},
-                  {"Яйца": 1} , {"Ванилин": 5 }
-                ]
-        item = receipe_model.create_receipt("Вафли хрустящие в вафильнице", "", items, data)
-        
-        # Шаги приготовления
-        item.instructions.extend([
-            "Масло положите в сотейник с толстым дном. Растопите его на маленьком огне на плите, на водяной бане либо в микроволновке.",
-            "Добавьте в теплое масло сахар. Перемешайте венчиком до полного растворения сахара. От тепла сахар довольно быстро растает.",
-            "Добавьте в масло яйцо. Предварительно все-таки проверьте масло, не горячее ли оно, иначе яйцо может свариться. Перемешайте яйцо с маслом до однородности.",
-            "Всыпьте муку, добавьте ванилин.",
-            "Перемешайте массу венчиком до состояния гладкого однородного теста."])
-        
-        item.comments = "Время приготовления: 20 мин. 8 порций"
-        result.append( item )
-        
-        # Цезарь с курицей
-        items = [ {"Куринное филе": 200}, {"Салат Романо": 50}, {"Сыр Пармезан": 50},
-                  {"Чеснок": 10} , {"Белый хлеб": 30 }, {"Соль": 5}, {"Черный перец": 2},
-                  {"Оливковое масло": 10}, {"Лимонный сок": 5}, {"Горчица дижонская": 5},
-                  {"Яйца": 2}
-                ]
-        item =  receipe_model.create_receipt("Цезарь с курицей", "", items, data)
-        item.instructions.extend([
-            "Нарезать куриное филе кубиками, нарубите чеснок, нарежьте хлеб на кубики."
-            "Очистить салат и обсушить его."
-            "Натереть сыр Пармезан на терке."
-            "Обжарить на сковороде куриное филе с чесноком до готовности."
-            "На той же сковородке обжарьить кубики хлеба до золотистости."
-            "В миске смешайте оливковое масло, лимонный сок, горчицу, измельченный чеснок, соль и перец."
-            "В большой миске смешайте кубики курицы, хлеба, листья салата."
-            "Добавить заправку и тщательно перемешать"])
-            
-        result.append(item)
-        
-        # Безе
-        items = [ {"Яйца": 3}, {"Сахарная пудра":180}, {"Ванилиин" : 5}, {"Корица": 5} ,{"Какао": 20} ]
-        result.append( receipe_model.create_receipt("Безе", "", items, data))
-        return result
-        
     @staticmethod
-    def create_storage_transactions(data: dict) -> list:
-        """
-            Сформировать список складских транзакций
-        Returns:
-            _type_: Массив объектов storage_row_model
-        """
-        result = []
-        default_storage = storage_model.create_default()
-            
-        if len(data.keys()) == 0:
-            raise operation_exception("Набор данных пуст. Невозможно сформировать список транзакций!")  
-        
-        items = [ { "Мука пшеничная": [1, "киллограмм"] }, 
-                  { "Черный перец": [50, "грамм" ] },
-                  { "Сахар" :[0.5, "киллограмм"] },
-                  { "Яйца": [6,"штука" ] },
-                  { "Оливковое масло": [0.2,"литр" ] },
-                  { "Куринное филе": [0.5, "киллограмм"] },
-                  { "Салат Романо": [1, "штука"] },
-                  { "Белый хлеб" : [3, "штука"] },
-                  { "Сыр Пармезан": [0.2, "киллограмм" ] },
-                  { "Горчица дижонская" : [0.1, "литр"] },
-                  { "Черный перец": [10, "грамм" ] },
-                  { "Лимонный сок": [1, "литр"] },
-                  { "Какао": [1,"киллограмм"] },
-                  { "Сыр Пармезан": [0.3, "киллограмм" ] },
-                  { "Ванилиин": [100, "грамм"] }  ]
-        
-        for element in items:
-            key = list(element.keys())[0]
-            values = list(element.values())[0]
-            
-            row = storage_row_model.create_credit_row(key, values, data, default_storage)
-            result.append(row)
-        
-        return result
-        
-    
-    # Основной метод
-    def create(self) -> bool:
-        """
-           В зависимости от настроек, сформировать или загрузить набор данных
-        Returns:
-            _type_: _description_
-        """
-        if self.__oprions.is_first_start == True:
-            # 1. Формируем и зпоминаем номеклатуру
-            nomenclatures = start_factory.create_nomenclatures()
-            self.__save( storage.nomenclature_key(), nomenclatures )
-            
-            # 2. Формируем и запоминаем рецепты
-            items = start_factory.create_receipts(nomenclatures)
-            self.__save( storage.receipt_key(), items)
-      
-            # 3. Формируем и запоминаем единицы измерения
-            items = start_factory.create_units()
-            self.__save( storage.unit_key(), items)
-            
-            # 4. Формируем и запоминаем группы номенклатуры
-            items = start_factory.create_groups()
-            self.__save( storage.group_key(), items)
-            
-            # 5. Формируем типовые складские проводки
-            items = start_factory.create_storage_transactions( self.storage.data )
-            self.__save( storage.storage_transaction_key(), items)
-            
-            return True
-           
-           
+    def create_nomenclature():
+        # создаём группы
+        group = nomenclature_group_model.create_group()
+        group_meat = nomenclature_group_model.create_group_meat()
+        group_eggs = nomenclature_group_model.create_group_eggs()
+        group_vegs = nomenclature_group_model.create_group_vegs()
+
+        Output = []
+
+        journal = []
+
+        # создаём еденицы
+        sp = range_model.create_spoon()
+        kg = sp.base_range
+        gr = kg.base_range
+
+        l = range_model.create_litr()
+        ml = l.base_range
+
+        sht = range_model.create_shtuka()
+
+        # создаём рецепты через фабричный метод в reciepe_model
+        draniki = reciepe_model.create_draniki()
+
+        # добавляем в номенклатуру
+        Output.append(nomenclature_model("Пшеничная мука", "Пшеничная мука", group, kg))
+        Output.append(nomenclature_model("сахар", "сахар", group, kg))
+        Output.append(nomenclature_model("масло", "масло", group, gr))
+        Output.append(nomenclature_model("яйца", "яйца", group_eggs, sht))
+        Output.append(nomenclature_model("ванилин", "ванилин", group, gr))
+        Output.append(
+            nomenclature_model("яичный белок", "яичный белок", group_eggs, sht)
+        )
+        Output.append(nomenclature_model("сахарная пудра", "сахарная пудра", group, kg))
+        Output.append(nomenclature_model("корица", "корица", group, gr))
+        Output.append(nomenclature_model("какао", "какао", group, gr))
+        Output.append(
+            nomenclature_model("куринное филе", "куринное филе", group_meat, kg)
+        )
+        Output.append(
+            nomenclature_model("салат романо", "салат романо", group_vegs, gr)
+        )
+        Output.append(nomenclature_model("сухари", "сухари", group, kg))
+        Output.append(nomenclature_model("картофель", "картофель", group, sht))
+        Output.append(nomenclature_model("лук репчатый", "лук репчатый", group, sht))
+        Output.append(nomenclature_model("соль", "соль", group, gr))
+
+        # создаём журнал ******ПЕРЕНЕСТИ В ОТДЕЛЬНУЮ ФУНКЦИЮ********
+        stor1 = storage_model("переулок штукатуров 212")
+        stor2 = storage_model("проспект блин-не-туда-свернул 11")
+        date1 = datetime(2024, 1, 15)
+        date2 = datetime(2023, 12, 12)
+        date3 = datetime(2024, 2, 20)
+        date4 = datetime(2023, 11, 20)
+        date5 = datetime(2023, 3, 4)
+
+        journal.append(
+            storage_factory.create_row(
+                stor1, storage_factory.create_transaction(True, Output[2], 242, date1)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor2, storage_factory.create_transaction(False, Output[2], 202, date2)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor2, storage_factory.create_transaction(True, Output[5], 100, date3)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor1, storage_factory.create_transaction(True, Output[6], 2, date4)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor1, storage_factory.create_transaction(False, Output[2], 300, date5)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor2, storage_factory.create_transaction(True, Output[1], 122, date1)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor1, storage_factory.create_transaction(False, Output[0], 451, date2)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor2, storage_factory.create_transaction(True, Output[6], 4652, date3)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor2, storage_factory.create_transaction(False, Output[8], 1231, date4)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor2, storage_factory.create_transaction(True, Output[7], 12, date5)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor2, storage_factory.create_transaction(False, Output[8], 213, date1)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor1, storage_factory.create_transaction(True, Output[4], 451, date2)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor1, storage_factory.create_transaction(False, Output[4], 231, date3)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor2, storage_factory.create_transaction(True, Output[3], 4512, date4)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor2, storage_factory.create_transaction(True, Output[2], 10, date5)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor2, storage_factory.create_transaction(False, Output[1], 218, date1)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor1, storage_factory.create_transaction(True, Output[3], 5456, date2)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor1, storage_factory.create_transaction(False, Output[7], 123, date3)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor1, storage_factory.create_transaction(True, Output[9], 54, date4)
+            )
+        )
+        journal.append(
+            storage_factory.create_row(
+                stor1, storage_factory.create_transaction(False, Output[2], 242, date5)
+            )
+        )
+
+        # создаём пропорции для рецептов (словарь типа {ингридиент:{количество : единица измерения}})
+        draniki_prop = {
+            Output[2].id: {2: sp},
+            Output[0].id: {2: sp},
+            Output[12].id: {7: sht},
+            Output[13].id: {1: sht},
+            Output[14].id: {2: gr},
+        }
+
+        draniki.ingridient_proportions = draniki_prop
+
+        return [
+            Output,
+            [kg, gr, l, ml, sht, sp],
+            [group, group_eggs, group_vegs, group_meat],
+            [draniki],
+            journal,
+        ]
+
+    def create(self):
+        if self.__options.is_first_start:
+            self.__options.is_first_start = "False"
+            ret = start_factory.create_nomenclature()
+            self.__build(ret)
+            return ret
+
         else:
-            # Другой вариант. Загрузка из источника данных    
-            return False
-        
-        
-    
-        
-        
-        
-        
-    
-    
-    
-    
+            items = self.__load_models()
+            self.__build(items)
+            return items
+
+    def save(self):
+        self.__load_models()
+
+    def __load_models(self):
+        res = []
+        loader = [
+            nomenclature_model._load,
+            range_model._load,
+            nomenclature_group_model._load,
+            reciepe_model._load,
+        ]
+        keys = [
+            storage.nomenclature_key(),
+            storage.unit_key(),
+            storage.group_key(),
+            storage.reciepe_key(),
+        ]
+
+        for index, cur_key in enumerate(keys):
+            print(index)
+            with open(self.__storage_path / f"{cur_key}.json") as source:
+                cur_json = json.load(source)
+                tmp_res = []
+                for cur_value in list(cur_json.values()):
+                    tmp_res.append(loader[index](cur_value))
+                res.append(tmp_res)
+        res.append([])
+        return res
+
+    @property
+    def options(self):
+        return self.__options
+
+    @options.setter
+    def options(self, value):
+        if not isinstance(value, settings):
+            raise argument_exception("Неверный аргумент")
+
+        self.__options = value
