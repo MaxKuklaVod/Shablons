@@ -33,3 +33,27 @@ class test_blocked_turns(unittest.TestCase):
         assert res is not None
         assert len(res)>0
         assert res[0].storage_id==factory.storage.data[storage.turn_key()][0].storage_id
+
+      
+   def test_check_date_turns(self):
+        #Подготовка
+        unit=settings_manager()
+        address=os.path.join(Path(__file__).parent.parent,'Jsons')
+        unit.open('./Src/setting.json',address)
+        unit.settings.block_period="2024-1-1"
+        factory=start_factory(unit.settings)
+        #при factory create автоматом сохраняет
+        factory.create()
+
+        key=storage.journal_key()
+        sevice=storage_service(factory.storage.data[key])
+        sevice.options=unit.settings
+
+        #дейсвтие  
+        sevice.create_blocked_turns()
+        res=sevice.create_turns(datetime(2022,1,1),datetime(2024,1,2))
+
+        #проверка
+        print(res)
+        assert res is not None
+        assert len(res)>0
