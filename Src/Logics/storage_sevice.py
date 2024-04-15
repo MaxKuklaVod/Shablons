@@ -10,7 +10,7 @@ sys.path.append(os.path.join(Path(__file__).parent, "src"))
 from error_proxy import error_proxy
 from pathlib import Path
 from Src.Storage.storage import storage
-
+from settings import settings
 from Src.Logics.storage_prototype import storage_prototype
 from Src.Logics.Reporting.Json_convert.reference_conventor import reference_conventor
 from exceptions import argument_exception
@@ -36,6 +36,16 @@ class storage_service:
             raise argument_exception("Wrong argument")
 
         self.__data = data
+
+    @property
+    def options(self):
+        return self.__options
+
+    @options.setter
+    def options(self, value: settings):
+        if not isinstance(value, settings):
+            raise argument_exception("Неверный аргумент")
+        self.__options = value
 
     def create_turns(self, start_period: datetime, stop_period: datetime) -> list:
 
