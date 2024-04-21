@@ -20,10 +20,11 @@ from Src.Storage.storage_model import storage_model
 from settings import settings
 from error_proxy import error_proxy
 import json
+from Src.Logics.Services.post_proces_servises import post_processing_service
 
 
 class start_factory:
-
+    __observer: post_processing_service = None
     __options: settings = None
     __storage: storage = None
     __storage_path = Path(__file__).parent.parent / "storage" / "saved_models"
