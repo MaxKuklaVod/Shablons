@@ -1,5 +1,8 @@
-from exceptions import argument_exception
+from Src.exceptions import argument_exception, operation_exception
 from datetime import datetime
+from Src.Logics.storage_observer import storage_observer
+from Src.Models.event_type import event_type
+from Src.Models.log_type_model import log_type
 
 
 class settings:
@@ -115,7 +118,11 @@ class settings:
         # проверка на длинну
         if len(value_stripped) != 12:
             raise argument_exception("Некорректная длинна")
-
+        storage_observer.raise_event(
+            event_type.make_log(
+                log_type.log_type_debug(), "изменение INN", "settings.py/INN"
+            )
+        )
         self.__INN = value_stripped
 
     @account.setter
@@ -129,7 +136,11 @@ class settings:
         # проверка на длинну
         if len(value_stripped) != 11:
             raise argument_exception("Некорректная длинна")
-
+        storage_observer.raise_event(
+            event_type.make_log(
+                log_type.log_type_debug(), "изменение account", "settings.py/account"
+            )
+        )
         self.__account = value_stripped
 
     @correspond_account.setter
@@ -143,7 +154,13 @@ class settings:
         # проверка на длинну
         if len(value_stripped) != 11:
             raise argument_exception("Некорректная длинна")
-
+        storage_observer.raise_event(
+            event_type.make_log(
+                log_type.log_type_debug(),
+                "изменение correspond_account",
+                "settings.py/correspond_account",
+            )
+        )
         self.__correspond_account = value_stripped
 
     @BIK.setter
@@ -156,7 +173,11 @@ class settings:
         # проверка на длинну
         if len(value_stripped) != 9:
             raise argument_exception("Некорректная длинна")
-
+        storage_observer.raise_event(
+            event_type.make_log(
+                log_type.log_type_debug(), "изменение BIK", "settings.py/BIK"
+            )
+        )
         self.__BIK = value_stripped
 
     @name.setter
@@ -164,7 +185,11 @@ class settings:
         # берем first name
         if not isinstance(value, str):
             raise argument_exception("Некорректный аргумент!")
-
+        storage_observer.raise_event(
+            event_type.make_log(
+                log_type.log_type_debug(), "изменение name", "settings.py/name"
+            )
+        )
         self.__name = value.strip()
 
     @property_type.setter
@@ -176,7 +201,13 @@ class settings:
         # проверка на длинну
         if len(value_stripped) != 5:
             raise argument_exception("Некорректная длинна")
-
+        storage_observer.raise_event(
+            event_type.make_log(
+                log_type.log_type_debug(),
+                "изменение property_type",
+                "settings.py/property_type",
+            )
+        )
         self.__property_type = value_stripped
 
     @block_period.setter
@@ -185,9 +216,26 @@ class settings:
             raise argument_exception("Некорректный аргумент")
 
         # проверка на указание даты со временем
-        value = value.split(" ")[0]
 
-        self.__block_period = datetime.strptime(value, "%Y-%m-%d")
+        try:
+            value = value.split(" ")[0]
+
+            legacy = self.__block_period
+
+            self.__block_period = datetime.strptime(value, "%Y-%m-%d")
+
+            if legacy != self.__block_period:
+                storage_observer.raise_event(event_type.changed_block_period())
+                storage_observer.raise_event(
+                    event_type.make_log(
+                        log_type.log_type_debug(),
+                        "изменение block_period",
+                        "settings.py/block_period",
+                    )
+                )
+
+        except Exception as ex:
+            raise operation_exception(f"неудалось сконвертировать дату {ex}")
 
     @property
     def is_first_start(self):
@@ -198,6 +246,11 @@ class settings:
         if not isinstance(value, str) and not isinstance(value, bool):
             raise argument_exception("wrong argument")
 
-        print(str(value).lower() == "true", value)
-
+        storage_observer.raise_event(
+            event_type.make_log(
+                log_type.log_type_debug(),
+                "изменение is_first_start",
+                "settings.py/is_first_start",
+            )
+        )
         self.__first_start = str(value).lower() == "true"

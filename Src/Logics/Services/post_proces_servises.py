@@ -1,61 +1,59 @@
-from pathlib import Path
-import os
-import uuid
-import sys
-
-sys.path.append(os.path.join(Path(__file__).parent, "src"))
-
-from pathlib import Path
-from Storage.storage import storage
-from exceptions import argument_exception
-from Src.Logics.storage_observer import storage_observer
+from Src.Logics.Services.service import service
 from Src.Models.event_type import event_type
-from Src.Logics.Services.abstract_service import abstract_sevice
+from Src.Models.nomenclature_model import nomenclature_model
+from Src.exceptions import exception_proxy
+from Src.Logics.storage_observer import storage_observer
+from Src.Models.nomenclature_model import nomenclature_model
+from Src.Storage.storage import storage
 
 
-class post_processing_service(abstract_sevice):
+#
+# Пост процессинг для наблюдения за сервисами
+#
+class post_processing_service(service):
 
-    __nomenclature = None
-    __storage = None
+    __nomenclature: nomenclature_model = None
 
-    def __init__(self, data: list):
+    def __init__(self, data: list) -> None:
         super().__init__(data)
-        self.__storage = storage()
         storage_observer.observers.append(self)
 
     @property
-    def nomenclature_id(self):
+    def nomenclature(self) -> nomenclature_model:
         return self.__nomenclature
 
-    @nomenclature_id.setter
-    def nomenclature_id(self, nom_id: uuid.UUID):
-        if not isinstance(nom_id, uuid.UUID):
-            raise argument_exception("неверный тип аргумента")
-        storage_observer.observers.append(self)
-        self.__nomenclature = nom_id
+    @nomenclature.setter
+    def nomenclature(self, source: nomenclature_model):
+        exception_proxy.validate(source, nomenclature_model)
+        self.__nomenclature = source
 
-    def event(self, handle_type: str):
+    def __observe_deleted_nomenclature(self):
+        """
+            Удалить номенклатуру во всех рецептам
+        Args:
+            object (nomenclature_model): _description_
+        """
+        if self.__nomenclature is None:
+            return
+
+        data_storage = storage()
+        key = storage.receipt_key()
+        receipts = data_storage.data[key]
+
+        for receipt in receipts:
+            keys = list(receipt.consist.keys())
+            for key in keys:
+                row = receipt.consist[key]
+                if row.nomenclature.id == self.__nomenclature.id:
+                    receipt.delete(row)
+
+    def handle_event(self, handle_type: str):
+        """
+            Обработать событие
+        Args:
+            handle_type (str): _description_
+        """
         super().handle_event(handle_type)
 
         if handle_type == event_type.deleted_nomenclature():
-            self.delete_journal
-            self.delete_reciepe
-
-    def delete_reciepe(self):
-        key = storage.reciepe_key()
-        for index, cur_rec in enumerate(self.__storage.data[key]):
-            for cur_id in list(cur_rec.ingridient_proportions.keys()):
-                print(cur_id == self.__nomenclature)
-                if self.__nomenclature == cur_id:
-                    res = cur_rec.ingridient_proportions
-                    res.pop(self.__nomenclature)
-                    storage().data[key][index].ingridient_proportions = res
-
-    def delete_journal(self):
-        key = storage.journal_key()
-        res = []
-        for cur_line in self.__storage.data[key]:
-            if cur_line.nomenclature.id != self.__nomenclature:
-                res.append(cur_line)
-        self.__storage.data[key] = res
-        storage_observer.raise_event(event_type.changed_block_period())
+            self.__observe_deleted_nomenclature()
