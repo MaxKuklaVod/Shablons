@@ -1,4 +1,6 @@
 from Src.Models.abstract_reference import abstract_reference
+
+
 #
 # Типы событий
 #
@@ -12,12 +14,21 @@ class event_type(abstract_reference):
             str: _description_
         """
         return "changed_block_period"
-    
-    @staticmethod 
-    def deleted_nomenclature()->str:
+
+    @staticmethod
+    def deleted_nomenclature() -> str:
         """
             Событие удаления номенклатуры
         Returns:
             str: _description_
         """
         return "deleted_nomenclature"
+
+    @staticmethod
+    def make_log_key():
+        """
+            Событие создания логов
+        Returns:
+            str: _description_
+        """
+        return "make_log"
