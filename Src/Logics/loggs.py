@@ -3,11 +3,12 @@ from Src.Storage.storage import storage
 from Src.Logics.storage_observer import storage_observer
 from Src.Models.event_type import event_type
 from Src.Logics.Reporting.Json_convert.reference_conventor import reference_conventor
+from Src.Models.abstract_reference import abstract_reference
 from pathlib import Path
 import json
 
 
-class loggs:
+class loggs(abstract_reference):
     __storage = None
     __log = None
     __save_path = "/Src/Storage/Saved_models/logs.json"
