@@ -1,116 +1,96 @@
-from pathlib import Path
-import sys
-import uuid
-
-sys.path.append(Path(__file__).parent.parent)
-
-
-from Src.Models.abstract_reference import abstract_reference
-from Src.exceptions import argument_exception, operation_exception
-from Src.Models.nomenclature_group_model import nomenclature_group_model
-from Src.Models.range_model import range_model
+from Src.reference import reference
+from Src.exceptions import exception_proxy, operation_exception
+from Src.Models.unit_model import unit_model
+from Src.Models.group_model import group_model
 
 
-class nomenclature_model(abstract_reference):
-    __full_name: str = ""
-    __nom_group: nomenclature_group_model
-    __ran_mod: range_model
+class nomenclature_model(reference):
+    "Группа номенклатуры"
+    _group = None
+    " Единица измерения "
+    _unit = None
 
     def __init__(
-        self,
-        name: str = "untituled",
-        f_NAME: str = "untituled",
-        nom: nomenclature_group_model = nomenclature_group_model(),
-        ran: range_model = range_model(),
+        self, name: str = None, group: reference = None, unit: reference = None
     ):
-        self.name = name
-        self.__id = self.create_id()
-        self.full_name = f_NAME
+        """_summary_
 
-        self.nom_group = nom
-
-        self.ran_mod = ran
-
-    @property
-    def id(self):
+        Args:
+            name (str): Наименование
+            group (reference): Группа
+            unit (reference): Единица измерения
         """
-            Уникальный код
-        Returns:
-            _type_: _description_
+
+        if not group is None:
+            exception_proxy.validate(group, reference)
+            self._group = group
+
+        if not unit is None:
+            exception_proxy.validate(unit, reference)
+            self._unit = unit
+
+        super().__init__(name)
+
+    @property
+    def group(self) -> group_model:
+        "Группа номенклатуры"
+        return self._group
+
+    @group.setter
+    def group(self, value: reference):
+        "Группа номенклатуры"
+        exception_proxy.validate(value, reference)
+        self._group = value
+
+    @property
+    def unit(self) -> unit_model:
+        "Единица измерения"
+        return self._unit
+
+    @unit.setter
+    def unit(self, value: reference):
+        "Единица измерения"
+        exception_proxy.validate(value, reference)
+        self._unit = value
+
+    def load(self, source: dict):
         """
-        return self.__id
-
-    @id.setter
-    def id(self, value: uuid.UUID):
-        if not isinstance(value, uuid.UUID):
-            raise argument_exception("Wrong type of argument")
-        self.__id = value
-
-    @property
-    def full_name(self):
-        return self.__full_name
-
-    @property
-    def nom_group(self):
-        return self.__nom_group
-
-    @property
-    def ran_mod(self):
-        return self.__ran_mod
-
-    # полное имя
-    @full_name.setter
-    def full_name(self, value: str):
-        if not isinstance(value, str):
-            raise argument_exception("Неверный аргумент!")
-
-        value_striped = value.strip()
-
-        if value_striped == "" or len(value_striped) > 255:
-            raise argument_exception("Некорректное значение наименование!")
-
-        self.__full_name = value_striped
-
-    # группа номенклатуры
-    @nom_group.setter
-    def nom_group(self, value: nomenclature_group_model):
-        print(type(value))
-
-        if not isinstance(value, nomenclature_group_model):
-            raise argument_exception("Неверный аргумент")
-
-        self.__nom_group = value
-
-    # еденица измерения
-    @ran_mod.setter
-    def ran_mod(self, value: range_model):
-        if not isinstance(value, range_model):
-            raise argument_exception("Неверный аргумент")
-
-        self.__ran_mod = value
-
-    @staticmethod
-    def _load(data: dict):
-        if data is None:
+            Загрузить данные
+        Args:
+            source (dict): исходный словарь
+        """
+        super().load(source)
+        if source is None:
             return None
 
-        if len(data) == 0:
-            raise argument_exception("wrong parameters")
+        source_fields = ["unit", "group"]
+        if set(source_fields).issubset(list(source.keys())) == False:
+            raise operation_exception(f"Невозможно загрузить данные в объект {self}!")
 
-        source_fields = ["id", "name", "full_name", "nom_group", "ran_mod"]
-        if set(source_fields).issubset(list(data.keys())) == False:
-            raise operation_exception(f"Невозможно загрузить данные в объект. {data}!")
+        self._group = group_model().load(source["group"])
+        self._unit = unit_model().load(source["unit"])
 
-        res = nomenclature_model()
+        return self
 
-        res.id = uuid.UUID(data["id"])
+    # Фабричные методы
 
-        res.name = data["name"]
+    @staticmethod
+    def get(nomenclature_name: str, nomenclatures: dict):
+        """
+            Получить значение элемента номенклатуры из словаря
+        Args:
+            nomenclature_name (str): наименование
+            nomenclatures (dict): исходный словарь storage.data
 
-        res.full_name = data["full_name"]
+        Returns:
+            nomenclature_model: _description_
+        """
+        exception_proxy.validate(nomenclature_name, str)
 
-        res.nom_group = nomenclature_group_model._load(data["nom_group"])
+        keys = list(filter(lambda x: x == nomenclature_name, nomenclatures.keys()))
+        if len(keys) == 0:
+            raise operation_exception(
+                f"Некоректно передан список. Не найдена номенклатура {nomenclature_name}!"
+            )
 
-        res.ran_mod = range_model._load(data["ran_mod"])
-
-        return res
+        return nomenclatures[keys[0]]

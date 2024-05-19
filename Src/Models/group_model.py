@@ -1,8 +1,9 @@
 from Src.reference import reference
 
+
 #
 # Модель группу номенклатуры
-# 
+#
 class group_model(reference):
     def create_default_group():
         """
@@ -13,4 +14,3 @@ class group_model(reference):
         """
         item = group_model("Ингредиенты")
         return item
-    
