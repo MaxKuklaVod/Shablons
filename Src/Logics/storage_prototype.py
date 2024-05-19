@@ -1,100 +1,114 @@
-from error_proxy import error_proxy
+from Src.exceptions import argument_exception, exception_proxy
+from Src.errors import error_proxy
 from datetime import datetime
 from Src.Models.nomenclature_model import nomenclature_model
-from Src.Models.reciepe_model import reciepe_model
 import uuid
 
 
+#
+# Прототип для обработки складских транзакций
+#
 class storage_prototype(error_proxy):
     __data = []
 
-    @property
-    def data(self):
-        return self.__data
-
     def __init__(self, data: list) -> None:
         if len(data) <= 0:
-            self.error_text = "Wrong argument"
+            self.error = "Набор данных пуст!"
+
+        exception_proxy.validate(data, list)
         self.__data = data
+        self.clear()
 
-    # фильтер по дате
-    def filter_date(self, start: datetime, finish: datetime):
+    # Методы фильтрации
+
+    def filter_by_period(self, start_period: datetime, stop_period: datetime):
+        """
+            Отфильтровать по периоду
+        Args:
+            start_period (datetime): начало
+            stop_period (datetime): окончание
+
+        Returns:
+            storage_prototype: _description_
+        """
+        self.clear()
+
+        exception_proxy.validate(start_period, datetime)
+        exception_proxy.validate(stop_period, datetime)
         if len(self.__data) <= 0:
-            self.error_text = "Wrong argument"
+            self.error = "Некорректно переданы параметры!"
 
-        if start > finish:
-            self.error_text = "Incorrect period"
+        if start_period > stop_period:
+            self.error = "Некорректный период!"
 
-        if self.if_error:
+        if not self.is_empty:
             return self.__data
 
         result = []
-        for cur_line in self.__data:
-            if cur_line.period >= start and cur_line.period <= finish:
-                result.append(cur_line)
+        for item in self.__data:
+            if item.period > start_period and item.period <= stop_period:
+                result.append(item)
 
         return storage_prototype(result)
 
-    # фильтер по номенклатуре
-    def filter_nom(self, nom: nomenclature_model):
-        if not isinstance(nom, nomenclature_model):
-            self.error_text = "Wrong argument"
+    def filter_by_nomenclature(self, nomenclature: nomenclature_model):
+        """
+            Отфильтровать по номенклатуре
+        Args:
+            nomenclature (nomenclature_model): _description_
 
-        if self.if_error:
-            return self.__data
+        Returns:
+            storage_prototype: _description_
+        """
+        self.clear()
+
+        exception_proxy.validate(nomenclature, nomenclature_model)
 
         result = []
-        for cur_line in self.__data:
-            if cur_line.nomenclature == nom:
-                result.append(cur_line)
+        for item in self.__data:
+            if item.nomenclature.id == nomenclature.id:
+                result.append(item)
 
         return storage_prototype(result)
 
-    # фильтер по айди номенклатуры
-    def filter_nom_id(self, id: uuid.UUID):
-        if not isinstance(id, uuid.UUID):
-            self.error_text = "Wrong argument"
+    # Код взят https://github.com/jezvgg/PatternsHomework/blob/main/Src/Logics/prototypes/nomenculature_prototype.py
+    def filter_by_id(self, id: str):
+        """
+            Отфильтровать по коду из любого списка на основе reference
+        Args:
+            id (str): _description_
 
-        if self.if_error:
-            return self.__data
+        Returns:
+            storage_prototype: _description_
+        """
+        self.clear()
+
+        exception_proxy.validate(id, str)
 
         result = []
-        # ищем сходные айди
-        for cur_line in self.__data:
-            if cur_line.nomenclature.id == id:
-                result.append(cur_line)
+        for item in self.__data:
+            if item.id == id:
+                result.append(item)
 
         return storage_prototype(result)
 
-    # фильтер по рецепту
-    def filter_reciepe(self, recepy: reciepe_model):
-        if not isinstance(recepy, reciepe_model):
-            self.error_text = "Wrong argument"
+    # Методы фильтрации
 
-        ingridients = recepy.ingridient_proportions
+    @property
+    def data(self):
+        """
+            Полученные данные
+        Returns:
+            _type_: _description_
+        """
+        return self.__data
 
-        result = []
-        # берем только записи с номенклатурой из рецепта
-        for cur_ing in list(ingridients.keys()):
-            for cur_line in self.__data:
-                if cur_ing == cur_line.nomenclature.id:
-                    result.append(cur_line)
-
-        return storage_prototype(result)
-
-    def filter_storage(self, storage_id: uuid.UUID):
-        if not isinstance(storage_id, uuid.UUID):
-            self.error_text = "Wrong argument"
-
-        if self.if_error:
-            return self.__data
-
-        result = []
-
-        # ищем сходные айди
-        for cur_line in self.__data:
-            print(cur_line.storage_id, storage_id)
-            if cur_line.storage_id == storage_id:
-                result.append(cur_line)
-
-        return storage_prototype(result)
+    @data.setter
+    def data(self, value: list):
+        """
+            Исходные данные
+        Args:
+            value (list): _description_
+        """
+        exception_proxy.validate(value, list)
+        self.__data = value

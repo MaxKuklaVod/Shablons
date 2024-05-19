@@ -4,6 +4,7 @@ from Src.Models.nomenclature_model import nomenclature_model
 from Src.Models.storage_model import storage_model
 from Src.Models.unit_model import unit_model
 
+
 #
 # Модель складского оборота
 #
@@ -16,8 +17,7 @@ class storage_row_turn_model(reference):
     _unit: unit_model = None
     # Значение
     _value: float = 0
-    
-    
+
     @property
     def value(self) -> float:
         """
@@ -26,7 +26,7 @@ class storage_row_turn_model(reference):
             float: _description_
         """
         return self._value
-    
+
     @value.setter
     def value(self, value: float) -> float:
         """
@@ -51,7 +51,7 @@ class storage_row_turn_model(reference):
             nomenclature_model: _description_
         """
         return self._nomenclature
-    
+
     @nomenclature.setter
     def nomenclature(self, value: nomenclature_model) -> nomenclature_model:
         """
@@ -61,9 +61,8 @@ class storage_row_turn_model(reference):
         """
         exception_proxy.validate(value, nomenclature_model)
         self._nomenclature = value
-        
-    
-    @property    
+
+    @property
     def unit(self) -> unit_model:
         """
             Единица измерения
@@ -71,7 +70,7 @@ class storage_row_turn_model(reference):
             unit_model: _description_
         """
         return self._unit
-    
+
     def unit(self, value: unit_model) -> unit_model:
         """
             Единица измерения
@@ -83,8 +82,7 @@ class storage_row_turn_model(reference):
         """
         exception_proxy.validate(value, unit_model)
         self._unit = value
-    
-        
+
     def storage(self) -> storage_model:
         """
             Склад
@@ -92,7 +90,7 @@ class storage_row_turn_model(reference):
             storage_model: _description_
         """
         return self._storage
-    
+
     def storage(self, value: storage_model) -> storage_model:
         """
             Склад
@@ -104,9 +102,11 @@ class storage_row_turn_model(reference):
         """
         exception_proxy.validate(value, storage_model)
         self._storage = value
-        
+
     @staticmethod
-    def create(nomenclature  : nomenclature_model, storage: storage_model, unit: unit_model) -> reference:
+    def create(
+        nomenclature: nomenclature_model, storage: storage_model, unit: unit_model
+    ) -> reference:
         """
             Фабричный метод для создания складского оборота
         Args:
@@ -121,5 +121,5 @@ class storage_row_turn_model(reference):
         row.storage = storage
         row.unit = unit
         row.nomenclature = nomenclature
-        
-        return row 
+
+        return row

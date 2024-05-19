@@ -2,12 +2,13 @@ import abc
 from Src.errors import error_proxy
 from Src.exceptions import exception_proxy, argument_exception
 
-# 
+
+#
 # Абстрактный класс для наследования.
 # Используется для сериализации и десериализации
 #
 class convertor(error_proxy):
-    
+
     @abc.abstractmethod
     def serialize(self, field: str, object) -> dict:
         """
@@ -17,11 +18,3 @@ class convertor(error_proxy):
         """
         exception_proxy.validate(field, str)
         self.clear()
-        
-            
-         
-        
-        
-        
-        
-    

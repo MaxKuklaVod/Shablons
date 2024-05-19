@@ -1,10 +1,10 @@
-from Src.Models.abstract_reference import abstract_reference
+from Src.reference import reference
 
 
 #
 # Типы событий
 #
-class event_type(abstract_reference):
+class event_type(reference):
 
     @staticmethod
     def changed_block_period() -> str:
@@ -18,17 +18,26 @@ class event_type(abstract_reference):
     @staticmethod
     def deleted_nomenclature() -> str:
         """
-            Событие удаления номенклатуры
+            Событие о удалении номенклатуры
         Returns:
             str: _description_
         """
         return "deleted_nomenclature"
 
     @staticmethod
-    def make_log_key():
+    def write_log() -> str:
         """
-            Событие создания логов
+            Событие - запись в лог
         Returns:
             str: _description_
         """
-        return "make_log"
+        return "write_log"
+
+    @staticmethod
+    def save_log() -> str:
+        """
+            Событие - сохранить лог
+        Returns:
+            str: _description_
+        """
+        return "save_log"

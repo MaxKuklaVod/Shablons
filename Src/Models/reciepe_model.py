@@ -1,119 +1,215 @@
-from pathlib import Path
-import sys
-import uuid
-
-sys.path.append(Path(__file__).parent.parent)
-
-from Src.Models.range_model import range_model
-from Src.Models.abstract_reference import abstract_reference
-from exceptions import argument_exception, operation_exception
+from Src.reference import reference
+from Src.Models.receipe_row_model import receipe_row_model
+from Src.exceptions import exception_proxy, operation_exception, argument_exception
+from Src.Models.nomenclature_model import nomenclature_model
 
 
-class reciepe_model(abstract_reference):
-    __coocking_algoritm = ""
-    __ingridient_proportions = {}
+#
+# Класс описание рецепта приготовления блюда
+#
+class receipe_model(reference):
+    # Вес брутто
+    _brutto: int = 0
 
-    def __init__(
-        self,
-        name: str = "untituled",
-        algrotim: str = "do whatever",
-        propotions: dict = {"a": "v"},
-    ):
-        self.name = name
+    # Вес нетто
+    _netto: int = 0
 
-        self.__id = self.create_id()
+    # Состав рецепта
+    _rows = {}
 
-        self.coocking_algoritm = algrotim
+    # Инструкции
+    _instructions = list()
 
-        self.ingrident_proportions = propotions
+    # Описание
+    _comments: str = ""
+
+    def __init__(self, name=None):
+        super().__init__(name)
+        self._rows = {}
+        self._instructions = []
+        self._brutto = 0
+
+    def add(self, row: receipe_row_model):
+        """
+            Добавить/ изменить состав блюда
+        Args:
+            row (receipe_row_model): _description_
+        """
+        exception_proxy.validate(row, receipe_row_model)
+        self._rows[row.name] = row
+        self.__calc_brutto()
+
+    def delete(self, row: receipe_row_model):
+        """
+            Удалить из состава блюда
+        Args:
+            row (receipe_row_model): _description_
+        """
+        exception_proxy.validate(row, receipe_row_model)
+
+        if row.name in self._rows.keys():
+            self._rows.pop(row.name)
+
+        self.__calc_brutto()
+
+    def __calc_brutto(self):
+        """
+        Перерасчет брутто
+        """
+        self._brutto = 0
+        for position in self._rows:
+            # Получаем свойство size
+            self._brutto += self._rows[position].size
 
     @property
-    def id(self):
+    def brutto(self) -> int:
         """
-            Уникальный код
+            Вес брутто
+        Returns:
+            int : _description_
+        """
+        return self._brutto
+
+    @brutto.setter
+    def brutto(self, value: int):
+        exception_proxy.validate(value, int)
+        self._brutto = value
+
+    @property
+    def netto(self) -> int:
+        return self._netto
+
+    @netto.setter
+    def netto(self, value: int):
+        """
+            Вес нетто
+        Args:
+            value (int): _description_
+        """
+        exception_proxy.validate(value, int)
+
+        self._netto = value
+
+    @property
+    def instructions(self) -> list:
+        """
+           Инструкции для приготовления
         Returns:
             _type_: _description_
         """
-        return self.__id
+        return self._instructions
 
-    @id.setter
-    def id(self, value: uuid.UUID):
-        if not isinstance(value, uuid.UUID):
-            raise argument_exception("Wrong type of argument")
-        self.__id = value
-
-    # описание рецепта
     @property
-    def coocking_algoritm(self):
-        return self.__coocking_algoritm
+    def comments(self) -> str:
+        return self._comments
 
-    @coocking_algoritm.setter
-    def coocking_algoritm(self, value: str):
-        if not isinstance(value, str):
-            raise argument_exception("Некорректный аргумент")
+    @comments.setter
+    def comments(self, value: str):
+        """
+            Описание блюда
+        Args:
+            value (str): _description_
+        """
+        exception_proxy.validate(value, str)
+        self._comments = value
 
-        value_stripped = value.strip()
-
-        if value_stripped == "":
-            raise argument_exception("Некорректный аргумент")
-
-        self.__coocking_algoritm = value_stripped
-
-    # Пропорции ингридиентов
     @property
-    def ingridient_proportions(self):
-        return self.__ingridient_proportions
+    def consist(self) -> list:
+        """
+            Состав рецепта
+        Returns:
+            _type_: _description_
+        """
+        return self._rows
 
-    @ingridient_proportions.setter
-    def ingridient_proportions(self, value: dict):
+    def rows(self) -> list:
+        """
+            Получить состав рецепта (read only)
+        Returns:
+            _type_: _description_
+        """
+        result = []
+        for key in self._rows.keys():
+            result.append(self._rows[key])
 
-        if not isinstance(value, dict) or len(value) == 0:
-            raise argument_exception("Некорректный аргумент")
+        return result
 
-        self.__ingridient_proportions = value
+    def load(self, source: dict):
+        """
+            Загрузить данные из словаря
+        Args:
+            source (dict): исходный словарь
 
-    @staticmethod
-    def create_draniki():
-        algoritm = """
-Картофель хорошо вымойте и очистите. С лука снимите шелуху, ополосните головку водой.
-Картофель и лук натрите на крупной терке.
-Овощную массу выложите в дуршлаг, оставьте на 10 минут и удалите выделившийся сок, хорошо отжав картофель с луком.
-Переложите в объемную миску, добавьте муку. Посолите и поперчите по вкусу. По желанию добавьте другие специи.
-В сковороду влейте масло, хорошо разогрейте на сильном огне. 
-Выкладывайте массу большой ложкой, формируя оладьи, прижимая сверху лопаткой.
-Убавьте огонь до среднего и жарьте с обеих сторон по 4 минуты, до золотистости.
-Драники получаются хорошо прожаренными и хрустящими. Сразу подавайте к столу!"""
-        return reciepe_model("Драники", algoritm.replace("\n", ""))
-
-    @staticmethod
-    def _load(data: dict):
-
-        if data is None:
+        """
+        super().load(source)
+        if source is None:
             return None
 
-        if len(data) == 0:
-            raise argument_exception("wrong parameters")
+        source_fields = ["comments", "consist", "instructions", "netto", "brutto"]
+        if set(source_fields).issubset(list(source.keys())) == False:
+            raise operation_exception(f"Невозможно загрузить данные в объект {source}!")
 
-        source_fields = ["id", "name", "coocking_algoritm", "ingridient_proportions"]
+        self._netto = source["netto"]
+        self._brutto = source["brutto"]
 
-        res = reciepe_model()
+        # Загрузим состав
+        for item in source["consist"].items():
+            row = item[1]
+            if row is not None:
+                value = receipe_row_model().load(row)
+                self.add(value)
 
-        if set(source_fields).issubset(list(data.keys())) == False:
-            raise operation_exception(f"Невозможно загрузить данные в объект. {data}!")
+        # Загрузим инструкции
+        self._instructions = source["instructions"]
+        return self
 
-        res.id = uuid.UUID(data["id"])
+    @staticmethod
+    def create_receipt(name: str, comments: str, items: list, data: list):
+        """
+            Фабричный метод. Сформировать рецепт
+        Args:
+            name (str): Наименование рецепта
+            comments (str): Приготовление
+            items (list): Состав рецепта
+            data (list): Список номенклатуры
 
-        res.name = data["name"]
+        Returns:
+            receipe_model: _description_
+        """
+        exception_proxy.validate(name, str)
+        if len(items) == 0:
+            raise argument_exception(
+                f"Некорректно передан параметр {items}. Список пуст!"
+            )
 
-        res.coocking_algoritm = data["coocking_algoritm"]
+        # Подготовим словарь со списком номенклатуры
+        nomenclatures = reference.create_dictionary(data)
+        receipt = receipe_model(name)
+        if comments != "":
+            receipt.comments = comments
 
-        res.ingrident_proportions = {}
-        for cur_key in list(data["ingridient_proportions"].keys()):
-            amount = list(data["ingridient_proportions"][cur_key].keys())
+        for position in items:
 
-            ran_mod = list(data["ingridient_proportions"][cur_key].values())[0]
+            if len(position) < 2:
+                raise operation_exception(
+                    "Невозможно сформировать элементы рецепта! Некорректный список исходных элементов!"
+                )
 
-            tmp_rm = range_model._load(ran_mod)
-            res.ingrident_proportions[cur_key] = {amount[0]: tmp_rm}
+            nomenclature_name = position[0]
+            size = position[1]
+            nomenclature = nomenclature_model.get(nomenclature_name, nomenclatures)
 
-        return res
+            # Определяем единицу измерения
+            if nomenclature.unit.base_unit is None:
+                unit = nomenclature.unit
+            else:
+                unit = nomenclature.unit.base_unit
+
+            # Создаем запись в рецепте
+            row = receipe_row_model()
+            row.nomenclature = nomenclature
+            row.size = size
+            row.unit = unit
+            receipt.add(row)
+
+        return receipt

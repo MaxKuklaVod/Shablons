@@ -1,37 +1,95 @@
-from Src.Logics.Reporting.Abstract_reporting import abstract_reporting
-from Src.Logics.Reporting.CSV_reporting import CSV_reporting
-from Src.Logics.Reporting.MD_reporting import MD_reporting
-from Src.Logics.Reporting.JSON_reporting import Json_reporting
-from exceptions import argument_exception, operation_exception
+from Src.Logics.reporting import reporting
+from Src.Logics.markdown_reporting import markdown_reporting
+from Src.Logics.csv_reporting import csv_reporting
+from Src.Logics.json_reporting import json_reporting
+from Src.exceptions import (
+    exception_proxy,
+    argument_exception,
+    operation_exception,
+    error_proxy,
+)
 
 
+#
+# Фабрика для отчетов
+#
 class report_factory:
     __maps = {}
 
-    def __build_structure(self):
-        self.__maps["CSV"] = CSV_reporting
-        self.__maps["MD"] = MD_reporting
-        self.__maps["Json"] = Json_reporting
+    # Формат данных для экспорт в Web сервер
+    __mimetype: str
 
-    def __init__(self):
-
+    def __init__(self) -> None:
         self.__build_structure()
 
-    def create(self, format: str, data, key) -> abstract_reporting:
-        if not isinstance(format, str) or not isinstance(key, str):
-            raise argument_exception("Wrong argument")
+    def __build_structure(self):
+        """
+        Сформировать структуру
+        """
+        self.__maps["csv"] = csv_reporting
+        self.__maps["markdown"] = markdown_reporting
+        self.__maps["json"] = json_reporting
 
-        if data is None:
-            raise argument_exception("No argument")
+    @property
+    def mimetype(self):
+        """
+           Формат данных для экспорт в Web сервер
+        Returns:
+            _type_: _description_
+        """
+        return self.__mimetype
+
+    def create(self, format: str, data: dict) -> reporting:
+        """
+            Сформировать объект для построения отчетности
+        Args:
+            format (str): Тип формта
+            data (_type_): Словарь с данными
+
+        Returns:
+            reporting: _description_
+        """
+        exception_proxy.validate(format, str)
+        exception_proxy.validate(data, dict)
 
         if len(data) == 0:
-            raise argument_exception("No DATA")
+            raise argument_exception("Пустые данные")
 
         if format not in self.__maps.keys():
-            raise operation_exception(f"for wrong obrabotka")
+            raise operation_exception(f"Для {format} нет обработчика")
 
+        # Получаем тип связанный с форматом
         report_type = self.__maps[format]
-
+        # Получаем объект
         result = report_type(data)
+        self.__mimetype = result.mimetype()
 
-        return result.create(key)
+        return result
+
+    def create_response(self, format: str, data: dict, storage_key: str, app):
+        """
+            Сформировать отчет и вывести его в формате response_class для Web сервера
+        Args:
+            format (str): тип формата: csv, markdown, json
+            data (dict): исходные данные
+            storage_key (str): ключ для отбора данных в storage
+            app (_type_): Flask приложение
+        Returns:
+            response_class: _description_
+        """
+        if app is None:
+            raise argument_exception("Некорректно переданы параметры!")
+        exception_proxy.validate(storage_key, str)
+
+        # Получаем нужный отчет
+        report = self.create(format, data)
+        # Формируем данные
+        data = report.create(storage_key)
+        error_proxy.write_log(f"Сформирован отчет. Формат {format}. Тип {storage_key}")
+
+        # Подготовить ответ
+        result = app.response_class(
+            response=f"{data}", status=200, mimetype=self.mimetype
+        )
+
+        return result

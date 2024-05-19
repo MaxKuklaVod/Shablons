@@ -7,11 +7,11 @@ from Src.errors import error_proxy
 # Абстрактный класс для наследования
 #
 class exception_proxy(Exception):
-    _error: error_proxy = error_proxy()
+    __error: error_proxy = error_proxy()
 
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
-        self._error.set_error(self)
+        self.__error.set_error(self)
 
     @property
     def error(self):
@@ -20,7 +20,7 @@ class exception_proxy(Exception):
         Returns:
             _type_: _description_
         """
-        return self._error
+        return self.__error
 
     # -> Источник: https://github.com/zhbr112/Restaurant-automation/blob/b2db73872c4c126155ad52b82db79223943aca29/src/abstract_reference.py#L16
 
@@ -41,18 +41,20 @@ class exception_proxy(Exception):
         """
 
         if value is None:
-            raise argument_exception("Пустой аргумент")
+            raise argument_exception(f"Пустой аргумент")
 
         # Проверка типа
         if not isinstance(value, type_):
-            raise argument_exception("Некорректный тип")
+            raise argument_exception(
+                f"Некорректный тип данных. Тип данных {type(value).__name__}. Ожидается: {type_}"
+            )
 
         # Проверка аргумента
         if len(str(value).strip()) == 0:
             raise argument_exception("Пустой аргумент")
 
         if len_ is not None and len(str(value).strip()) >= len_:
-            raise argument_exception("Некорректная длина аргумента")
+            raise argument_exception(f"Некорректная длина аргумента. Ожидается {len_}")
 
         return True
 

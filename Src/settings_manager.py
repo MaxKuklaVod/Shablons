@@ -1,116 +1,155 @@
 import os
-from pathlib import Path
 import json
 import uuid
-from settings import settings
-from exceptions import argument_exception, operation_exception
+
+from Src.settings import settings
+from Src.errors import error_proxy
+from Src.exceptions import exception_proxy, operation_exception
+from Src.Logics.convert_factory import convert_factory
 
 
+#
+# Менеджер настроек
+#
 class settings_manager(object):
-    # Имя файла настроек
-    __file_name = "settings.json"
-    # Уникальный номер
-    __unique_number = None
-    # Словарь с данными
-    __data = {}
-
-    # Настройки инстанс
-    __settings = settings()
+    # Наименование файла по умолчанию
+    _settings_file_name = "settings.json"
+    # Словарь с исходными данными
+    _data = None
+    # Внутренний уникальный номер
+    _uniqueNumber = None
+    # Данные с настройками
+    _settings = None
+    # Описание ошибок
+    _error = error_proxy()
 
     def __new__(cls):
         if not hasattr(cls, "instance"):
             cls.instance = super(settings_manager, cls).__new__(cls)
         return cls.instance
 
-    def __convert(self):
-        if len(self.__data) == 0:
-            raise operation_exception("Невозможно создать объект типа settings.py")
+    def __init__(self):
+        if self._uniqueNumber is None:
+            self._uniqueNumber = uuid.uuid4()
+            self.open(self._settings_file_name)
 
-        fields = dir(self.__settings.__class__)
+            # После загрузки создаем объект класса settings
+            self._settings = settings()
+            self.__load()
 
-        field_keys = list(self.__data.keys())
+    def __open(self):
+        """
+        Открыть файл с настройками
+        """
+        file_path = os.path.split(__file__)
+        settings_file = "%s/%s" % (file_path[0], self._settings_file_name)
+        if not os.path.exists(settings_file):
+            self._error.set_error(
+                Exception(
+                    "ERROR: Невозможно загрузить настройки! Не найден файл %s",
+                    settings_file,
+                )
+            )
+            return
 
-        # по ключам json подставляет атрибуты для класса и проверяет их
-        check_atrs = 0
-        for cur_key in field_keys:
-            if cur_key in fields:
-                value = self.__data[cur_key]
-                print(value, type(value), cur_key)
-                setattr(self.__settings, cur_key, value)
-
-        return True
-
-    def __init__(self) -> None:
-        self.__unique_number = uuid.uuid4()
-
-    def open(self, file_name="settings.json", file_path=Path(__file__).parent) -> bool:
-        if not isinstance(file_name, str):
-            raise argument_exception("ERROR: Неверный аргумент!")
-
-        if file_name == "":
-            raise argument_exception("ERROR: Неверный аргумент!")
-
-        self.__file_name = file_name.strip()
-        self.__file_path = file_path
         try:
-            self.__open()
-            self.__convert()
-            return True
+            with open(settings_file, "r") as read_file:
+                self._data = json.load(read_file)
         except:
-            return False
+            self._error.set_error(
+                Exception(
+                    "ERROR: Невозможно загрузить настройки! Не найден файл %s",
+                    settings_file,
+                )
+            )
+
+    def open(self, file_name: str):
+        """
+            Открыть файл с настройками
+        Args:
+            file_name (str):
+        """
+        exception_proxy.validate(file_name, str)
+
+        legacy_file_name = self._settings_file_name
+        self._settings_file_name = file_name
+        self.__open()
+        self.__load()
+
+        # Восстанавливаем старое наименование файлв
+        self._settings_file_name = legacy_file_name
+
+    def __load(self):
+        """
+        Private: Загрузить словарь в объект
+        """
+        if self._data == None:
+            return
+
+        if len(self._data) == 0:
+            return
+
+        # Список полей от типа назначения
+        fields = list(
+            filter(lambda x: not x.startswith("_"), dir(self._settings.__class__))
+        )
+
+        # Заполняем свойства
+        for field in fields:
+            keys = list(filter(lambda x: x == field, self._data.keys()))
+            if len(keys) != 0:
+                value = self._data[field]
+
+                # Если обычное свойство - заполняем.
+                if not isinstance(value, list) and not isinstance(value, dict):
+                    setattr(self._settings, field, value)
+
+    def save(self) -> bool:
+        """
+        Сохранить настройки
+        """
+        try:
+            factory = convert_factory()
+
+            file_path = os.path.split(__file__)
+            settings_file = "%s/%s" % (file_path[0], self._settings_file_name)
+
+            with open(settings_file, "w") as write_file:
+                data = factory.serialize(self._settings)
+                json_text = json.dumps(
+                    data, sort_keys=True, indent=4, ensure_ascii=False
+                )
+                write_file.write(json_text)
+
+                return True
+        except Exception as ex:
+            raise operation_exception(
+                f"Ошибка при записи файла {self.__storage_file}\n{ex}"
+            )
 
     @property
-    def settings(self):
-        return self.__settings
+    def settings(self) -> settings:
+        """
+            Текущие настройки в приложении
+        Returns:
+            settings: _
+        """
+        return self._settings
 
     @property
     def data(self):
         """
-            Текущие данные
+            Словарь, который содержит данные из настроек
         Returns:
-            _type_: словарь
+            dict:
         """
-        return self.__data
+        return self._data
 
     @property
-    def number(self) -> str:
-        return str(self.__unique_number.hex)
-
-    def __open(self):
+    def error(self) -> error_proxy:
         """
-            Открыть файл с настройками
-        Raises:
-            Exception: Ошибка при открытии файла
+            Текущая информация об ошибке
+        Returns:
+            error_proxy:
         """
-        file_path = os.path.join(self.__file_path, self.__file_name)
-
-        settings_file = file_path
-        if not os.path.exists(settings_file):
-            raise operation_exception(
-                "ERROR: Невозможно загрузить настройки! Не найден файл %s",
-                settings_file,
-            )
-
-        with open(settings_file, "r") as read_file:
-            self.__data = json.load(read_file)
-
-    # настройки в json
-    def _make_json(self):
-
-        saved = {}
-
-        for cur_key in list(self.__data.keys()):
-            saved[cur_key] = str(getattr(self.settings, cur_key))
-            print(getattr(self.settings, cur_key))
-
-        return json.dumps(saved, ensure_ascii=False)
-
-    # сохранить настройки и записать их в файл
-    def save_settings(self):
-        res = self._make_json()
-        file = os.path.join(self.__file_path, self.__file_name)
-
-        with open(file, "w") as saved:
-            saved.write(res)
-
-        return True
+        return self._error

@@ -1,256 +1,122 @@
-from Src.exceptions import argument_exception, operation_exception
-from datetime import datetime
+from Src.exceptions import exception_proxy, argument_exception
 from Src.Logics.storage_observer import storage_observer
 from Src.Models.event_type import event_type
-from Src.Models.log_type_model import log_type
+from datetime import datetime
+import os
 
 
+#
+# Класс для описания настроек
+#
 class settings:
-    __first_name = ""
-    __first_start = True
-
-    # переменные для settings
-    __block_period = datetime(1, 1, 1)
-    __INN = ""
-    __account = ""
-    __correspond_account = ""
-    __BIK = ""
-    __name = ""
-    __property_type = ""
-    __report_type = ""
-
-    # Репорт формат, из него будем брать строки
-    __Report_format = {"CSV": "", "Markdown": "", "Json": ""}
+    _inn = 0
+    _short_name = ""
+    _first_start = True
+    _mode = "csv"
+    _block_period = datetime.now
+    _current_path = str(os.path.split(__file__)[0])
 
     @property
-    def Report_format(self):
-        return self.__Report_format
-
-    @property
-    def first_name(self):
-        return self.__first_name
-
-    @first_name.setter
-    def first_name(self, value: str):
+    def current_path(self):
         """
-            Полное наименование
-        Args:
-            value (str): _description_
-
-        Raises:
-            Exception: _description_
+        Каталог записи файлов (лог / хранилище)
         """
-        if not isinstance(value, str):
-            raise argument_exception("Некорректный аргумент!")
+        return self._current_path
 
-        self.__first_name = value.strip()
+    @current_path.setter
+    def current_path(self, value: str):
+        if value == "":
+            path = os.path.split(__file__)
+        else:
+            path = value
+
+        self._current_path = path
 
     @property
-    def report_type(self):
-        return self.__report_type
-
-    @report_type.setter
-    def report_type(self, value: str):
+    def inn(self):
         """
-            Полное наименование
-        Args:
-            value (str): _description_
-
-        Raises:
-            Exception: _description_
+            ИНН
+        Returns:
+            int:
         """
-        if not isinstance(value, str):
-            raise argument_exception("Некорректный аргумент!")
+        return self._inn
 
-        self.__report_type = value.strip()
-
-    # объявления
-    @property
-    def INN(self):
-        return self.__INN
+    @inn.setter
+    def inn(self, value: int):
+        exception_proxy.validate(value, int)
+        self._inn = value
 
     @property
-    def account(self):
-        return self.__account
+    def short_name(self):
+        """
+            Короткое наименование организации
+        Returns:
+            str:
+        """
+        return self._short_name
 
-    @property
-    def correspond_account(self):
-        return self.__correspond_account
+    @short_name.setter
+    def short_name(self, value: str):
+        if value == "":
+            path = os.path.split(__file__)
+        else:
+            path = value
 
-    @property
-    def BIK(self):
-        return self.__BIK
-
-    @property
-    def name(self):
-        return self.__name
-
-    @property
-    def property_type(self):
-        return self.__property_type
-
-    @property
-    def block_period(self):
-        return self.__block_period
-
-    # вывод CSV
-    @property
-    def Report_CSV(self):
-        return self.__Report_format["CSV"]
-
-    @property
-    def Report_Markdown(self):
-        return self.__Report_format["Markdown"]
-
-    @property
-    def Report_Json(self):
-        return self.__Report_format["Json"]
-
-    # Сеттеры
-    @INN.setter
-    def INN(self, value: str):
-        # value_stripped=value.replace(' ','')
-        value_stripped = value.strip().replace(" ", "")
-        # Состоит ли из символов (value у нас str на случай незначащих нулей в начале числа)
-        if not isinstance(value, str) or not (value_stripped.isdigit()):
-            raise argument_exception("Некорректный аргумент")
-
-        # проверка на длинну
-        if len(value_stripped) != 12:
-            raise argument_exception("Некорректная длинна")
-        storage_observer.raise_event(
-            event_type.make_log(
-                log_type.log_type_debug(), "изменение INN", "settings.py/INN"
-            )
-        )
-        self.__INN = value_stripped
-
-    @account.setter
-    def account(self, value: str):
-        # делаем через replace на случай введения с пробелами
-        value_stripped = value.strip().replace(" ", "")
-        # Состоит ли из символов (value у нас str на случай незначащих нулей в начале числа)
-        if not isinstance(value, str) or not (value_stripped.isdigit()):
-            raise argument_exception("Некорректный аргумент")
-
-        # проверка на длинну
-        if len(value_stripped) != 11:
-            raise argument_exception("Некорректная длинна")
-        storage_observer.raise_event(
-            event_type.make_log(
-                log_type.log_type_debug(), "изменение account", "settings.py/account"
-            )
-        )
-        self.__account = value_stripped
-
-    @correspond_account.setter
-    def correspond_account(self, value: str):
-        # делаем через replace на случай введения с пробелами
-        value_stripped = value.strip().replace(" ", "")
-        # Состоит ли из символов (value у нас str на случай незначащих нулей в начале числа)
-        if not isinstance(value, str) or not (value_stripped.isdigit()):
-            raise argument_exception("Некорректный аргумент")
-
-        # проверка на длинну
-        if len(value_stripped) != 11:
-            raise argument_exception("Некорректная длинна")
-        storage_observer.raise_event(
-            event_type.make_log(
-                log_type.log_type_debug(),
-                "изменение correspond_account",
-                "settings.py/correspond_account",
-            )
-        )
-        self.__correspond_account = value_stripped
-
-    @BIK.setter
-    def BIK(self, value: str):
-        value_stripped = value.strip().replace(" ", "")
-        # Состоит ли из символов (value у нас str на случай незначащих нулей в начале числа)
-        if not isinstance(value, str) or not (value_stripped.isdigit()):
-            raise argument_exception("Некорректный аргумент")
-
-        # проверка на длинну
-        if len(value_stripped) != 9:
-            raise argument_exception("Некорректная длинна")
-        storage_observer.raise_event(
-            event_type.make_log(
-                log_type.log_type_debug(), "изменение BIK", "settings.py/BIK"
-            )
-        )
-        self.__BIK = value_stripped
-
-    @name.setter
-    def name(self, value: str):
-        # берем first name
-        if not isinstance(value, str):
-            raise argument_exception("Некорректный аргумент!")
-        storage_observer.raise_event(
-            event_type.make_log(
-                log_type.log_type_debug(), "изменение name", "settings.py/name"
-            )
-        )
-        self.__name = value.strip()
-
-    @property_type.setter
-    def property_type(self, value: str):
-        value_stripped = value.strip()
-        if not isinstance(value, str):
-            raise argument_exception("Некорректный аргумент")
-
-        # проверка на длинну
-        if len(value_stripped) != 5:
-            raise argument_exception("Некорректная длинна")
-        storage_observer.raise_event(
-            event_type.make_log(
-                log_type.log_type_debug(),
-                "изменение property_type",
-                "settings.py/property_type",
-            )
-        )
-        self.__property_type = value_stripped
-
-    @block_period.setter
-    def block_period(self, value: str):
-        if not isinstance(value, str):
-            raise argument_exception("Некорректный аргумент")
-
-        # проверка на указание даты со временем
-
-        try:
-            value = value.split(" ")[0]
-
-            legacy = self.__block_period
-
-            self.__block_period = datetime.strptime(value, "%Y-%m-%d")
-
-            if legacy != self.__block_period:
-                storage_observer.raise_event(event_type.changed_block_period())
-                storage_observer.raise_event(
-                    event_type.make_log(
-                        log_type.log_type_debug(),
-                        "изменение block_period",
-                        "settings.py/block_period",
-                    )
-                )
-
-        except Exception as ex:
-            raise operation_exception(f"неудалось сконвертировать дату {ex}")
+        self._short_name = path
 
     @property
     def is_first_start(self):
-        return self.__first_start
+        """
+        Флаг Первый старт
+        """
+        return self._first_start
 
     @is_first_start.setter
-    def is_first_start(self, value):
-        if not isinstance(value, str) and not isinstance(value, bool):
-            raise argument_exception("wrong argument")
+    def is_first_start(self, value: bool):
+        self._first_start = value
 
-        storage_observer.raise_event(
-            event_type.make_log(
-                log_type.log_type_debug(),
-                "изменение is_first_start",
-                "settings.py/is_first_start",
-            )
-        )
-        self.__first_start = str(value).lower() == "true"
+    @property
+    def report_mode(self):
+        """
+            Режим построения отчетности
+        Returns:
+            _type_: _description_
+        """
+        return self._mode
+
+    @report_mode.setter
+    def report_mode(self, value: str):
+        exception_proxy.validate(value, str)
+
+        self._mode = value
+
+    @property
+    def block_period(self):
+        """
+        Дата блокировки периода
+        """
+        return self._block_period
+
+    @block_period.setter
+    def block_period(self, value):
+        legacy_period = self._block_period
+
+        if isinstance(value, datetime):
+            self._block_period = value
+
+            if legacy_period != self._block_period:
+                storage_observer.raise_event(event_type.changed_block_period())
+
+            return
+
+        if isinstance(value, str):
+            try:
+                self._block_period = datetime.strptime(value, "%Y-%m-%d")
+                if legacy_period != self._block_period:
+                    storage_observer.raise_event(event_type.changed_block_period())
+            except Exception as ex:
+                raise argument_exception(
+                    f"Невозможно сконвертировать сроку в дату! {ex}"
+                )
+        else:
+            raise argument_exception("Некорректно переданы параметры!")
